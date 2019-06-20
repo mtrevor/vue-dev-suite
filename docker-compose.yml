@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  cli:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: vds/vue-development:latest
+    volumes:
+      - ${VUE_PROJECT_PATH}:/vue
+    command: ['echo', 'Service cli is run only']
+
+  vue:
+    image: vds/vue-development:latest
+    volumes:
+      - ${VUE_PROJECT_PATH}:/vue
+    ports:
+      - '8080:8080'
+    command: ['yarn', 'serve']
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  majestic:
+    image: vds/vue-development:latest
+    volumes:
+      - ${VUE_PROJECT_PATH}:/vue
+    ports:
+      - '4000:4000'
+    command: ['majestic']
+
+  storybook:
+    image: vds/vue-development:latest
+    volumes:
+      - ${VUE_PROJECT_PATH}:/vue
+    ports:
+      - '6006:6006'
+    command: ['yarn', 'run', 'storybook']
